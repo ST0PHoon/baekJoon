@@ -10,15 +10,12 @@ import java.util.StringTokenizer;
 public class baek_15500 {
 	// 데이터 설정
 	static ArrayList<String> result = new ArrayList<>();
-	static int resultNumber = 0;
+	static Stack<Integer> stack1 = new Stack<>();
+	static Stack<Integer> stack2 = new Stack<>();
 	
 	public static void main(String[] args) throws IOException {
 		// 데이터 설정
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-		Stack<Integer> stack1 = new Stack<>();
-		Stack<Integer> stack2 = new Stack<>();
-		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));		
 		
 		// 데이터 입력
 		int N = Integer.parseInt(br.readLine());
@@ -32,16 +29,16 @@ public class baek_15500 {
 		// 데이터 계산
 		for (int i = N; i > 0; i--) {
 			
-			if (stack1.contains(N)) {
-				moveValue(stack1, "1", stack2, "2", N);
+			if (stack1.contains(i)) {
+				moveValue1("1", "2", i);	
 			} else {
-				moveValue(stack2, "2", stack1, "1", N);
+				moveValue2("2","1", i);
 			}
 			
 		}
 		
 		// 데이터 출력
-		System.out.println(resultNumber);
+		System.out.println(result.size());
 		
 		for (int i = 0; i < result.size(); i++) {
 			System.out.println(result.get(i)); 
@@ -49,22 +46,47 @@ public class baek_15500 {
 
 	}
 	
-	public static void moveValue(Stack<Integer> st1, String stNum1, Stack<Integer> st2, String stNum2, int searchValue) {
-		int i = -1;
+	public static void moveValue1( String stNum1, String stNum2, int searchValue) {
+		int i = stack1.peek();
 		
 		while (i != searchValue && i > -1) {
-			i = st1.pop();
+			stack2.push(i);
 			
-			st2.push(i);
+			stack1.pop();
 			
-			resultNumber++;
+			i = stack1.peek();
 			
 			result.add(stNum1 + " " + stNum2);
 		}
 		
-		result.add(stNum1 + " 3");
+		if(searchValue == i) {
+			stack1.pop();
+			
+			result.add(stNum1 + " 3");		
+		}	
 		
-		resultNumber++;	
+	}
+	
+	public static void moveValue2( String stNum1, String stNum2, int searchValue) {
+		int i = stack2.peek();
+		
+		while (i != searchValue && i > -1) {
+			stack1.push(i);
+			
+			stack2.pop();
+			
+			i = stack2.peek();
+			
+			result.add(stNum1 + " " + stNum2);
+		}
+		
+		if(searchValue == i) {
+			stack2.pop();
+			
+			result.add(stNum1 + " 3");		
+		}
+			
+		
 	}
 
 }
