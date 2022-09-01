@@ -20,7 +20,7 @@ public class baek_1966 {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			
 			int N = Integer.parseInt(st.nextToken());		// 몇개를 받을지
-			int M = Integer.parseInt(st.nextToken()) + 1;	// 어디에 존재하는지
+			int M = Integer.parseInt(st.nextToken());	// 어디에 존재하는지
 			
 			// 케이스별 정보, 중요도
 			StringTokenizer st2 = new StringTokenizer(br.readLine());
@@ -32,36 +32,28 @@ public class baek_1966 {
 			}
 			
 			// 계산
-			int result = 0;
-			int aimNumber = list.get(M - 1);
+			int result = 0;	// 출력할 때, 마다 1 더할 예정
 			
-			while (result != 10) {
-				result++;
-				
-				int listSize = list.size();
-				
-				if (checkPriority(list, list.get(listSize - 1))) {	// 자기보다 중요도를 큰 수가 없으면
-					if (M == listSize) {
+			while (true) {	
+				if (checkPriority(list, list.get(0))) {	// 자기보다 중요도를 큰 수가 없으면
+					if (M == 0) {	// 목표로 하는 수 출력
+						result++;
 						resultArray[i] = result;
 						break;
 					}
+					// 중요도는 같지만, 목표로하는 수가 아닌 경우
+					M--;
+					list.remove(0);
+					result++;
 					
-					if (aimNumber == list.get(listSize - 1)) {
-						M++;
-						list = modifyList(list, listSize);
-					} else {
-						list.remove(listSize - 1);
+				} else {	// 큰 수가 있으면 뒤로 넘기기
+					if (M == 0) {	// 목표로 하는 수
+						M = list.size() - 1;
+					} else {	// 목표로 하는 수 아니면, 앞으로 한칸
+						M--;
 					}
-					
-				} else {	// 있으면 넘기기 함수 실행
-
-					if (M == listSize) {
-						M = 1;
-					} else {
-						M++;
-					}
-					
-					list = modifyList(list, listSize);
+					// 뒤로 넘기기
+					list = modifyList(list);
 				}	
 			}
 		}
@@ -76,8 +68,8 @@ public class baek_1966 {
 	// 증요도 판별
 	public static boolean checkPriority(List<Integer> checkList, int checkNumber) {
 		boolean result = true;
-		
-		for (int i = 0; i < checkList.size() - 1; i++) {
+		// 2번째 값부터 마지막 값까지 자기보다 큰 수 있는지 확인
+		for (int i = 1; i < checkList.size(); i++) {
 			if (checkNumber < checkList.get(i)) {
 				result = false;
 				break;
@@ -88,14 +80,12 @@ public class baek_1966 {
 	}
 	
 	// 뒤로 넘기기
-	public static List<Integer> modifyList(List<Integer> list, int numberLocation) {
+	public static List<Integer> modifyList(List<Integer> list) {
+		list.add(list.get(0));
 		
-		list.add(0, list.get(numberLocation - 1));
-		
-		list.remove(list.size() - 1);
+		list.remove(0);
 		
 		return list;
-		
 	}
 
 }
