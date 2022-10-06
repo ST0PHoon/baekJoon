@@ -7,15 +7,16 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.StringTokenizer;
 
-public class baek_24480 {
-	static int N, M, R, cnt = 1;
+public class baek_2606 {
+	static int N, M, cnt = 1;
+	static int result = 0;
 
 	static ArrayList<Integer> list[];
 	static int[] visited;
 
 	public static void main(String[] args) throws Exception {
 		input();
-		DFS(R);
+		DFS(1);
 		for (int i = 1; i <= N; i++) {
 			System.out.println(visited[i]);
 		}
@@ -26,6 +27,7 @@ public class baek_24480 {
 		for (Integer d : list[start]) {
 			if (visited[d] > 0)
 				continue;
+			result++;
 			DFS(d);
 		}
 	}
@@ -35,7 +37,6 @@ public class baek_24480 {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		R = Integer.parseInt(st.nextToken());
 		list = new ArrayList[N + 1];
 		visited = new int[N + 1];
 		for (int i = 1; i <= N; i++) {
